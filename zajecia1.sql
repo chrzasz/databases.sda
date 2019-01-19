@@ -1,3 +1,5 @@
+USE classicmodels;
+
 /*standard querries*/
 
 select distinct productName, productVendor,MSRP from products;
@@ -37,4 +39,11 @@ SELECT * FROM products WHERE buyPrice BETWEEN 5 AND 20;
 
 SELECT * FROM orders WHERE shippedDate BETWEEN 
 CAST('2004-12-01' as DATE) AND CAST('2004-12-31' as DATE);
+
+/* Cwiczenie 7*/
+SELECT DISTINCT productName FROM products;
+
+SELECT * FROM products WHERE productDescription like '%steering%';
+
+SELECT * FROM products WHERE productName like '%196%';
 
