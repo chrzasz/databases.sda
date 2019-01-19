@@ -21,6 +21,10 @@ SELECT * FROM products WHERE productScale='1:10' OR productScale='1:700';
 
 SELECT * FROM products WHERE quantityInStock < 1000 AND buyPrice > 50;
 
+SELECT * FROM products WHERE productScale IN ('1:10', '1:700');
+
+SELECT DISTINCT productVendor FROM products;
+SELECT * FROM products WHERE productVendor IN ('Highway 66 Mini Classics','Motor City Art Classics','Second Gear Diecast');
 
 
 
