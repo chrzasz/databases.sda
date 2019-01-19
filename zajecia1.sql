@@ -123,4 +123,30 @@ SELECT orderNumber,productName,productVendor,quantityInStock,quantityOrdered
 FROM products p
 INNER JOIN orderdetails od
 ON p.productCode = od.productCode
-WHERE p.quantityInStock < od.quantityOrdered
+WHERE p.quantityInStock < od.quantityOrdered;
+
+/*Cwiczenie 11
+1. Wyświetl informacje na temat wpłat klientów, korzystając z operatora LEFT JOIN. Porównaj, jakie wyniki otrzymasz, kiedy “lewą tabelą” będzie customers, a jakie, kiedy payments.
+2. Sprawdź, czy w asortymencie sklepu są produkty, które “się nie sprzedają”. Wyświetl ich podstawowe dane (nazwa, producent, cena, stan magazynowy).
+*/
+
+SELECT * FROM customers
+LEFT JOIN payments USING (customerNumber);
+
+
+
+SELECT * FROM payments 
+LEFT JOIN customers USING (customerNumber);
+
+
+/*2 - zly przyklad*/
+SELECT productName, productVendor, buyPrice, quantityInStock, quantityOrdered, priceEach
+FROM products
+LEFT JOIN orderdetails
+USING (productCode)
+WHERE orderNumber IS NULL;
+
+SELECT customerName, checkNumber, paymentDate, amount
+FROM customers
+LEFT JOIN payments
+USING (customerNumber);
