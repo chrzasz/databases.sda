@@ -32,3 +32,9 @@ SELECT * FROM orderdetails WHERE quantityOrdered > 70;
 
 SELECT * FROM products WHERE productCode IN (SELECT productCode FROM orderdetails WHERE quantityOrdered > 70);
 
+/* Cwiczenie 7*/
+SELECT * FROM products WHERE buyPrice BETWEEN 5 AND 20;
+
+SELECT * FROM orders WHERE shippedDate BETWEEN 
+CAST('2004-12-01' as DATE) AND CAST('2004-12-31' as DATE);
+
