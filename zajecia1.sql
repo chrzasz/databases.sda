@@ -1,16 +1,16 @@
 /*standard querries*/
 
-
 select distinct productName, productVendor,MSRP from products;
 
+/* Wypisz, w jakich skalach dostępne są sprzedawane modele*/
 select distinct productScale from products order by productScale desc;
 
 select COUNT(distinct productScale) from products;
 
 /* Ilu producentów ma w swojej ofercie sprzedawca? */
-select COUNT(distinct productVendor) from products;
+SELECT COUNT(distinct productVendor) FROM products ;
 
-select COUNT(distinct employeeNumber) from employees;
+SELECT COUNT(distinct employeeNumber) from employees;
 
 /*Cwiczenie 4
 1. Jakie modele ma w swojej ofercie producent, który ma w nazwie liczbę ‘66’?
@@ -66,3 +66,61 @@ SELECT * FROM products WHERE productName LIKE '%196%';
 /*Cwiczenie 8 Wypisz 3 najtańsze modele w największej skali */
 SELECT * FROM products WHERE productScale='1:10' ORDER BY MSRP LIMIT 3; 
 
+/*Cwiczenie 9
+Wypisz 5 najpopularniejszych producentów.
+Wyświetl modele od tych producentów, posortowane od najpopularniejszego z nich, do ‘numeru 5’.
+*/
+
+SELECT DISTINCT productVendor FROM products WHERE productCode IN(
+SELECT productCode FROM orderDetails ORDER BY quantityOrdered) LIMIT 5;
+
+SELECT productName, productVendor, MSRP
+FROM products
+WHERE productVendor IN(
+'Min Lin Diecast',
+'Classic Metal Creations',
+'Highway 66 Mini Classics',
+'Red Start Diecast',
+'Motor City Art Classics'
+)
+ORDER BY FIELD(productVendor,
+'Highway 66 Mini Classics',
+'Min Lin Diecast',
+'Classic Metal Creations',
+'Red Start Diecast',
+'Motor City Art Classics');
+
+
+SELECT * FROM products;
+SELECT * FROM orders;
+SELECT * FROM orderdetails; /*productCode*/
+
+SELECT * FROM orderdetails ORDER BY quantityOrdered DESC LIMIT 5;
+
+
+SELECT * FROM products WHERE productCode IN (SELECT productCode FROM orderdetails ORDER BY quantityOrdered DESC);
+
+SELECT * FROM products WHERE productCode IN('S12_4675','S18_3278','S700_2466','S700_3167','S12_3990');
+
+/*Cwiczenie 10
+1. Wypisz najchętniej kupowane produkty.
+2. Wypisz z 3 tabel następujące dane: nazwę klienta, miasto, państwo, datę zapłaty, datę zamówienia,datę na kiedy potrzebne (required date), datę wysłania.
+3. Sprawdź, czy są produkty, których stan magazynowy należy zwiększyć (w historii zamówień są zamówienia, gdzie liczba zamawiana była większa niż obecny stan magazynowy).
+*/
+SELECT * FROM products p INNER JOIN orderDetails o ON p.productCode = o.productCode WHERE p.productCode = 'S12_4675';
+
+SELECT * FROM orderDetails ORDER BY quantityOrdered DESC LIMIT 1; /* S12_4675 */
+SELECT * FROM products WHERE productCode IN (SELECT productCode FROM orderDetails ORDER BY quantityOrdered DESC);
+SELECT * FROM products WHERE productCode IN ('S12_4675'); /* '1969 Dodge Charger' */
+/* 1 */
+SELECT * FROM products p INNER JOIN orderDetails od ON p.productCode = od.productCode ORDER BY od.quantityOrdered DESC;
+/* 2 */
+SELECT * FROM customers c
+INNER JOIN payments p ON c.customerNumber = p.customerNumber
+INNER JOIN orders o ON o.customerNumber = c.CustomerNumber;
+/* 3 */
+SELECT orderNumber,productName,productVendor,quantityInStock,quantityOrdered
+FROM products p
+INNER JOIN orderdetails od
+ON p.productCode = od.productCode
+WHERE p.quantityInStock < od.quantityOrdered
