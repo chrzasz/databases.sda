@@ -1,4 +1,4 @@
-USE classicmodels;
+
 
 /*standard querries*/
 
@@ -43,7 +43,12 @@ CAST('2004-12-01' as DATE) AND CAST('2004-12-31' as DATE);
 /* Cwiczenie 7*/
 SELECT DISTINCT productName FROM products;
 
-SELECT * FROM products WHERE productDescription like '%steering%';
+SELECT * FROM products WHERE productDescription LIKE '%steering%';
 
-SELECT * FROM products WHERE productName like '%196%';
+SELECT * FROM products WHERE productName LIKE '%196%';
+
+
+/*Cwiczenie 8*/
+SELECT * FROM products WHERE productScale='1:10' ORDER BY buyPrice LIMIT 3; 
+
 
