@@ -26,8 +26,9 @@ SELECT * FROM products WHERE productScale IN ('1:10', '1:700');
 SELECT DISTINCT productVendor FROM products;
 SELECT * FROM products WHERE productVendor IN ('Highway 66 Mini Classics','Motor City Art Classics','Second Gear Diecast');
 
+/*Subquerries Cwiczenie 6*/
 
+SELECT * FROM orderdetails WHERE quantityOrdered > 70;
 
-
-
+SELECT * FROM products WHERE productCode IN (SELECT productCode FROM orderdetails WHERE quantityOrdered > 70);
 
