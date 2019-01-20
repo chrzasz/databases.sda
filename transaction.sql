@@ -13,4 +13,4 @@ SHOW CREATE TABLE customers;
 
 SET autocommit = 0;
 
-show global variables like 'autocommit';
+show session variables where variable_name = 'tmp_table_size' or variable_name = 'autocommit';
