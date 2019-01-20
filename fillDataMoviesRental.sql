@@ -76,6 +76,30 @@ VALUES
 ;
 
 
+INSERT INTO rents(rentedMovieId,customer,status,rentPricePerDay,rentedDate,returnedDate)
+VALUES (2,2,'In rent','0.99','2019-01-16',NULL);
+
+
+/*Cwiczenie 16
+rents SET returnedDate
+change status to 'Returned'
+moviesCopies
+isRented
+rentedTo = NULL;
+*/
+UPDATE rents
+SET returnedDate='2019-01-21';
+
+UPDATE rents
+SET status='Returned';
+
+UPDATE moviesCopies
+SET isRented=FALSE;
+
+UPDATE moviesCopies
+SET rentedTo=NULL;
+
+
 
 
 
