@@ -38,7 +38,7 @@ dla danej kopii filmu (odwrotnie przy zwrocie). */
 DELIMITER $$
 CREATE TRIGGER before_moviescopies_isRented_update    
 	BEFORE UPDATE ON moviescopies
-    FOR EACH ROW FOLLOWS before_moviescopies_update
+    FOR EACH ROW PRECEDES before_moviescopies_update
 BEGIN
     IF (OLD.rentedTo IS NULL AND NEW.rentedTo IS NOT NULL) THEN
         SET NEW.isRented = true;
@@ -52,11 +52,27 @@ $$ DELIMITER ;
 #DROP TRIGGER before_moviescopies_isRented_update;
 
 /*symulate trigger*/
-UPDATE moviescopies SET rentedTo=1 WHERE copyID = 3;
+UPDATE moviescopies SET rentedTo=1 WHERE copyID = 4;
 
 
 /* 3. Zmień tabelę i zdefiniuj trigger, który przy rejestracji zwrotu wylicza
 należność za wypożyczenie. */
 
 ALTER TABLE rents 
-ADD COLUMN totalPrice DECIMAL(5,2) NOT NULL DEFAULT 0;
+MODIFY COLUMN totalPrice DECIMAL(6,2) AFTER rentPricePerDay;
+
+DELIMITER $$
+CREATE TRIGGER before_rents_update    
+	BEFORE UPDATE ON rents
+    FOR EACH ROW 
+BEGIN
+    IF (OLD.returnedDate IS NULL AND NEW.returnedDate IS NOT NULL) THEN
+        SET NEW.totalPrice = NEW.rentPricePerDay * DATEDIFF(NEW.returnedDate, OLD.rentedDate);
+	END IF;
+END
+$$ DELIMITER ;
+
+/*symulate trigger*/
+UPDATE rents SET returnedDate = '2018-01-26' WHERE rentID=1;
+
+UPDATE rents SET rentedDate = '2018-01-20';
