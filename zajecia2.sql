@@ -119,5 +119,33 @@ SELECT @rentedCount,@rentingCount;
 SHOW PROCEDURE STATUS WHERE db = 'moviesrental';
 SHOW CREATE PROCEDURE ShowStatus;
 
+/* ------------------------------------------------------------------------------
+---------- FUNKCJE --------------------------------------------------------------
+---------------------------------------------------------------------------------*/
 
+/* cw 25 
+Napisz funkcję, która wylicza cenę za dzień wypożyczenia filmu wg relacji:
+- jeśli od daty wydania nie upłynęły 2 tygodnie, 10 zł,
+- jeśli między 2 tygodnie a 6 miesięcy, 5 zł,
+- jeśli powyżej 6 miesięcy, 2,50 zł.
+Sprawdź działanie funkcji dla każdego filmu znajdującego się w bazie. */
 
+DELIMITER %%
+CREATE FUNCTION countPrice(p_releaseDate DATE)
+	RETURNS DOUBLE
+	DETERMINISTIC
+BEGIN
+	DECLARE price DECIMAL;
+    DECLARE daysCount INT;
+    SET daysCount = DATEDIFF(curdate() - p_releaseDate);
+    
+    IF(daysCount < 14) THEN SET price = 10;
+    ELSEIF(daysCount >=14 AND daysCount <=180) THEN SET price = 5;
+    ELSE SET price = 2.5;
+    END IF;
+    
+RETURN (price);
+END%%
+DELIMITER 
+
+SELECT * FROM 
