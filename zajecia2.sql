@@ -109,12 +109,15 @@ DELIMITER ;
 
 #DROP PROCEDURE ShowStatus;
 
+/* call procedure */
+
 CALL ShowStatus(1, @rentedCount,@rentingCount);
 SELECT @rentedCount,@rentingCount;
     
     
-
-
+/* show */ 
+SHOW PROCEDURE STATUS WHERE db = 'moviesrental';
+SHOW CREATE PROCEDURE ShowStatus;
 
 
 
