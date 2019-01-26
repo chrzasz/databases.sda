@@ -73,6 +73,48 @@ END
 $$ DELIMITER ;
 
 /*symulate trigger*/
-UPDATE rents SET returnedDate = '2018-01-26' WHERE rentID=1;
+UPDATE rents SET returnedDate = '2018-01-22' WHERE rentID=2;
 
 UPDATE rents SET rentedDate = '2018-01-20';
+
+UPDATE rents SET totalPrice=null;
+
+
+/* ------------------------------------------------------------------------------
+---------- PROCEDURY ------------------------------------------------------------
+---------------------------------------------------------------------------------*/
+
+/* Napisz procedurę, która dla podanego klienta zwróci informację o tym,
+ile filmów do tej pory wypożyczył oraz ile aktualnie wypożycza. */
+
+SELECT count(*) FROM rents WHERE customer = 1;
+
+DELIMITER $$
+CREATE PROCEDURE ShowStatus(
+	IN custID VARCHAR(25),
+    OUT rentedCount INT,
+    OUT rentingCount INT
+)
+BEGIN
+	SELECT count(*)
+    INTO rentedCount
+    FROM rents
+    WHERE  customer = custID AND  status = 'Returned';
+	SELECT count(*)
+    INTO rentingCount
+    FROM rents
+    WHERE status = 'In rent';
+END$$
+DELIMITER ;    
+
+#DROP PROCEDURE ShowStatus;
+
+CALL ShowStatus(1, @rentedCount,@rentingCount);
+SELECT @rentedCount,@rentingCount;
+    
+    
+
+
+
+
+
