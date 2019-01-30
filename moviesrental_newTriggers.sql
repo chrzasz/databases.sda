@@ -9,10 +9,10 @@ SELECT curdate();
 DELIMITER $$
 CREATE TRIGGER rents_BEFORE_INSERT BEFORE INSERT ON rents FOR EACH ROW
 BEGIN
-SET NEW.rentPricePerDay=(SELECT getRentPricePerDay(releaseDate) FROM moviesinfo);
+SET NEW.rentPricePerDay=(SELECT getRentPricePerDay(releaseDate) FROM moviesinfo WHERE movieInfoId=NEW.rentedMovieID);
 SET NEW.rentedDate=(SELECT curdate());
-SET NEW.status='In rent';
-UPDATE moviescopies SET rentedTo=new.customer WHERE copyID=new.rentedMovieId;
+SET NEW.rentStatus='In rent';
+UPDATE moviescopies SET rentedTo=new.customer WHERE copyID=new.rentedMovieID;
 END
 $$
 DELIMITER ;
