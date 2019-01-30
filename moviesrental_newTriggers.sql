@@ -26,11 +26,11 @@ SET @countDays = DATEDIFF(NEW.returnedDate, OLD.rentedDate);
 			SET NEW.totalPrice = NEW.rentPricePerDay * DATEDIFF(NEW.returnedDate, OLD.rentedDate);
 		ELSE SET NEW.totalPrice = NEW.rentPricePerDay ;	
         END IF;
-        SET NEW.status = 'Returned';
-        UPDATE moviescopies SET isRented=false,rentedTo=NULL WHERE copyID=NEW.rentedMovieId;
+        SET NEW.rentStatus = 'Returned';
+        UPDATE moviescopies SET isRented=false,rentedTo=NULL WHERE copyID=NEW.rentedMovieID;
 	ELSE
-    SET NEW.status = 'In Rent';
-    UPDATE moviescopies SET rentedTo=new.customer WHERE copyID=new.rentedMovieId;
+    SET NEW.rentStatus = 'In Rent';
+    UPDATE moviescopies SET rentedTo=new.customer WHERE copyID=new.rentedMovieID;
 	END IF;
 END
 $$
