@@ -17,7 +17,8 @@ $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE TRIGGER before_rents_update BEFORE UPDATE ON rents FOR EACH ROW BEGIN
+CREATE TRIGGER before_rents_update BEFORE UPDATE ON rents FOR EACH ROW
+BEGIN
 SET @countDays = DATEDIFF(NEW.returnedDate, OLD.rentedDate);
     IF (OLD.returnedDate IS NULL AND NEW.returnedDate IS NOT NULL) THEN 
 		IF (@countDays>0) THEN
@@ -26,6 +27,9 @@ SET @countDays = DATEDIFF(NEW.returnedDate, OLD.rentedDate);
         END IF;
         SET NEW.status = 'Returned';
         UPDATE moviescopies SET isRented=false,rentedTo=NULL WHERE copyID=NEW.rentedMovieId;
+	ELSE
+    SET NEW.status = 'In Rent';
+    UPDATE moviescopies SET rentedTo=new.customer WHERE copyID=new.rentedMovieId;
 	END IF;
 END
 $$
